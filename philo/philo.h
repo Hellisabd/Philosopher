@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:56:45 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/15 13:55:27 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/05/16 13:15:29 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <sys/wait.h>
-# include "get_next_line.h"
 # include <stdio.h>
 
 typedef struct s_phil
@@ -36,13 +35,23 @@ typedef struct s_phil
 	ssize_t		time_to_sleep;
 	ssize_t		time_before_death;
 	ssize_t		nbr_of_eat;
-	ssize_t	timestart;
-	ssize_t	timeend;
-	int		nbr_phil;
+	ssize_t		timestart;
+	ssize_t		timeend;
+	ssize_t		nbr_phil;
+	pthread_t	*id;
+	int			counter;
+	int			i;
+	pthread_mutex_t    mutex;
+	int			err;
 }	t_phil;
 
 //LIBFT
 
+int	ft_strisdigit(char *s);
 ssize_t	ft_atoi(const char *nptr);
+
+//THREAD
+
+void	*routine(void *data);
 
 #endif 

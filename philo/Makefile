@@ -12,7 +12,8 @@ CYAN = \033[0;96m
 WHITE = \033[0;97m
 
 
-SRCS	= 	
+SRCS	= 	libft_utils.c \
+			thread.c
 
 
 SRCS_MAIN	= main.c $(SRCS)
@@ -21,7 +22,7 @@ OBJS	= $(SRCS_MAIN:.c=.o)
 
 CC	= @cc
 
-CFLAGS	+= -Wall -Wextra -Werror -g3
+CFLAGS	+= -Wall -Wextra -Werror -fsanitize=thread -g3
 
 RM	= @rm -rf
 
@@ -30,7 +31,6 @@ CURRENT_DATE	:= $(shell date +"%Y-%m-%d %H:%M:%S")
 all	: $(NAME)
 
 $(NAME) : $(OBJS)
-	@make --no-print-directory -C Libft 
 	$(CC) $(CFLAGS) -pthread $(OBJS) $(LIBS) -o $(NAME)
 	@echo "$(MAGENTA)Make Done$(DEF_COLOR)"
 
