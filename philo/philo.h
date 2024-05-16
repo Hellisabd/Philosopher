@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:56:45 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/16 13:15:29 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:24:14 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,30 @@
 # include <sys/wait.h>
 # include <stdio.h>
 
+typedef struct s_pers
+{
+	int	name;
+}	t_pers;
+
+
 typedef struct s_phil
 {
-	ssize_t		time_to_eat;
-	ssize_t		time_to_sleep;
-	ssize_t		time_before_death;
-	ssize_t		nbr_of_eat;
-	ssize_t		timestart;
-	ssize_t		timeend;
-	ssize_t		nbr_phil;
-	pthread_t	*id;
-	int			counter;
-	int			i;
+	ssize_t				time_to_eat;
+	ssize_t				time_to_sleep;
+	ssize_t				time_before_death;
+	ssize_t				nbr_of_eat;
+	ssize_t				time;
+	ssize_t				nbr_phil;
+	pthread_t			*id;
+	int					counter;
+	int					i;
 	pthread_mutex_t    mutex;
-	int			err;
+	pthread_mutex_t    start;
+	pthread_mutex_t    *f_m;
+	pthread_mutex_t    t_m;
+	int					err;
+	int					*fork;
+	int					starting;
 }	t_phil;
 
 //LIBFT
