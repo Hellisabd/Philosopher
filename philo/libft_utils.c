@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:44:44 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/16 10:22:17 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:26:44 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	ft_strisdigit(char *s)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	if (s[0] == '+')
 		i++;
 	while (s[i])
