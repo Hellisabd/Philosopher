@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:56:05 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/23 00:18:56 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/05/23 13:46:13 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	fill_phil(char **argv, int argc, t_phil	*phil)
 {
-	struct timeval tv;
+	// struct timeval tv;
 	
 	phil->nbr_phil = ft_atoi(argv[1]);
 	phil->time_before_death =  1000 * ft_atoi(argv[2]);
@@ -25,8 +25,6 @@ void	fill_phil(char **argv, int argc, t_phil	*phil)
 		phil->nbr_of_eat = ft_atoi(argv[5]);
 	else
 		phil->nbr_of_eat = -1;
-	gettimeofday(&tv, NULL);
-	phil->time = tv.tv_usec;
 }
 
 void	init_mutex(t_phil *phil)
@@ -35,6 +33,7 @@ void	init_mutex(t_phil *phil)
 
 	i = 0;
 	pthread_mutex_init(&phil->start, NULL);
+	pthread_mutex_init(&phil->init_sup, NULL);
 	pthread_mutex_init(&phil->t_m, NULL);
 	pthread_mutex_init(&phil->alive_check, NULL);
 	pthread_mutex_init(&phil->print_m, NULL);
@@ -70,16 +69,15 @@ void	init_phil(int argc, char **argv, t_phil *phil)
 	i = -1;
 	while (++i < phil->nbr_phil)
 	{
-		phil->time_since_last_meal[i] = get_current_time();
+		phil->time_since_last_meal[i] = get_time();
 		phil->is_eating[i] = false;
 	}
 	init_mutex(phil);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	int argc = 5;
-	char *argv[6] = {"prout", "4", "410", "200", "200", NULL};
+	struct timeval tv;
 	t_phil	phil;
 
 	init_phil(argc, argv, &phil);
@@ -91,6 +89,8 @@ int	main(void)
 		pthread_create(&phil.id[phil.i], NULL, routine, &phil);
 		phil.i++;
 	}
+	gettimeofday(&tv, NULL);
+	phil.time = (tv.tv_sec * (u_int64_t)1000 + tv.tv_usec / 1000);
 	pthread_mutex_unlock(&phil.start);
 	phil.i = 0;
 	while (phil.i < phil.nbr_phil)

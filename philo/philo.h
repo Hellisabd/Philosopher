@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:56:45 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/22 23:25:16 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:55:30 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@
 # include <sys/wait.h>
 # include <stdio.h>
 
+# define NC "\e[0m"
+# define RED "\e[1;31m"
+# define GREEN "\e[1;32m"
+# define YELLOW "\e[1;33m"
+# define ORANGE "\e[1;34m"
+# define PURPLE "\e[1;35m"
+# define BLUE "\e[1;36m"
+
 typedef struct s_pers
 {
 	int	name;
@@ -49,6 +57,7 @@ typedef struct s_phil
 	bool				alive;
 	int					i;
 	pthread_mutex_t		mutex;
+	pthread_mutex_t		init_sup;
 	pthread_mutex_t		print_m;
 	pthread_mutex_t    start;
 	pthread_mutex_t    *f_m;
@@ -66,10 +75,13 @@ ssize_t	ft_atoi(const char *nptr);
 
 //THREAD
 
+int	supervisor(t_phil *phil, int id);
 void	*routine(void *data);
 
 //UTILS
 
-ssize_t	get_current_time(void);
+void	my_printf(char *clr1, ssize_t time, int id, char *str);
+int	ft_sleep(ssize_t end, t_phil *phil, int id);
+ssize_t	get_time(void);
 
 #endif 
