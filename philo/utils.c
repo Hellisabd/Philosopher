@@ -6,14 +6,26 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:52:55 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/23 15:55:36 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/05/24 10:55:43 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "philo.h"
 
-void	my_printf(char *clr1, ssize_t time, int id, char *str)
+void	my_printf(ssize_t time, int id, char *str)
 {
+	char	*clr1;
+
+	if (id % 5 == 0)
+		clr1 = PURPLE;
+	if (id % 5 == 1)
+		clr1 = ORANGE;
+	if (id % 5 == 2)
+		clr1 = GREEN;
+	if (id % 5 == 3)
+		clr1 = BLUE;
+	if (id % 5 == 4)
+		clr1 = RED;
 	printf("%s%ld %d %s%s", clr1, time, id, str, NC);
 }
 

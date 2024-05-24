@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 13:11:46 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/23 16:56:43 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:26:53 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	take_fork(t_phil *phil, int id)
 		pthread_mutex_unlock(&phil->print_m);
 		return (-1);
 	}
-	my_printf(ORANGE, chrono(phil->time), id, "has taken a fork\n");
+	my_printf(chrono(phil->time), id, "has taken a fork\n");
 	pthread_mutex_unlock(&phil->print_m);
 	pthread_mutex_lock(&phil->f_m[second_fork]);
 	if (supervisor(phil, id) == -1)
@@ -68,7 +68,7 @@ int	take_fork(t_phil *phil, int id)
 		pthread_mutex_unlock(&phil->print_m);
 		return (-1);
 	}
-	my_printf(ORANGE, chrono(phil->time), id, "has taken a fork\n");
+	my_printf(chrono(phil->time), id, "has taken a fork\n");
 	pthread_mutex_unlock(&phil->print_m);
 	pthread_mutex_lock(&phil->t_m);
 	if (supervisor(phil, id) == -1)
@@ -95,9 +95,9 @@ int	take_fork(t_phil *phil, int id)
 		pthread_mutex_unlock(&phil->print_m);
 		return (-1);
 	}
-	my_printf(GREEN, chrono(phil->time), id, "is eating\n");
+	my_printf(chrono(phil->time), id, "is eating\n");
 	pthread_mutex_unlock(&phil->print_m);
-	if (ft_sleep(phil->time_to_eat / 1000, phil, id))
+	if (ft_sleep(phil->time_to_eat / 1000, phil, id) == -1)
 	{
 		pthread_mutex_unlock(&phil->f_m[first_fork]);
 		pthread_mutex_unlock(&phil->f_m[second_fork]);
@@ -130,7 +130,9 @@ int	supervisor(t_phil *phil, int id)
 	if ((phil->time_since_last_meal[id] + (phil->time_before_death / 1000)) * 1000 < get_time() * 1000)
 	{
 		phil->alive = false;
-		my_printf(RED, chrono(phil->time), id, "died\n");
+		pthread_mutex_lock(&phil->print_m);
+		my_printf(chrono(phil->time), id, "died\n");
+		pthread_mutex_unlock(&phil->print_m);
 		pthread_mutex_unlock(&phil->alive_check);
 		return (-1);
 	}
@@ -142,9 +144,10 @@ void	*routine(void *data)
 {
 	t_phil	*phil;
 	int		id;
-	// pthread_t	id_s;
+	int		meal;
 
 	phil = (t_phil *)data;
+	meal = 0;
 	pthread_mutex_lock(&phil->mutex);
 	id = phil->counter;
 	phil->counter++;
@@ -167,17 +170,18 @@ void	*routine(void *data)
 			pthread_mutex_unlock(&phil->print_m);
 			return (NULL);
 		}
-		my_printf(PURPLE, chrono(phil->time), id, "is thinking\n");
+		my_printf(chrono(phil->time), id, "is thinking\n");
 		pthread_mutex_unlock(&phil->print_m);
 		if (supervisor(phil, id) == -1)
 			return (NULL);
 		take_fork(phil, id);
+		meal++;
 		if (supervisor(phil, id) == -1)
 			return (NULL);
 		pthread_mutex_lock(&phil->print_m);
 		if (supervisor(phil, id) == -1)
 			return (pthread_mutex_unlock(&phil->print_m), NULL);
-		my_printf(BLUE, chrono(phil->time), id, "is sleeping\n");
+		my_printf(chrono(phil->time), id, "is sleeping\n");
 		pthread_mutex_unlock(&phil->print_m);
 		if (supervisor(phil, id) == -1)
 			return (NULL);
@@ -185,6 +189,14 @@ void	*routine(void *data)
 			return (NULL);
 		if (supervisor(phil, id) == -1)
 			return (NULL);
+		pthread_mutex_lock(&phil->init_sup);
+		if (meal == phil->nbr_of_eat)
+		{
+			// printf("nbr of meal at the exit : %d\n", meal);
+			pthread_mutex_unlock(&phil->init_sup);
+			return (NULL);
+		}
+		pthread_mutex_unlock(&phil->init_sup);
 	}
 	return (NULL);
 }

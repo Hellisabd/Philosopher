@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:56:45 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/23 15:55:30 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/05/24 10:51:49 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	*routine(void *data);
 
 //UTILS
 
-void	my_printf(char *clr1, ssize_t time, int id, char *str);
+void	my_printf(ssize_t time, int id, char *str);
 int	ft_sleep(ssize_t end, t_phil *phil, int id);
 ssize_t	get_time(void);
 
