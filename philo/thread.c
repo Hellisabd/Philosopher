@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 13:11:46 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/24 11:26:53 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:19:27 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,9 @@ int	take_fork(t_phil *phil, int id)
 	}
 	my_printf(chrono(phil->time), id, "is eating\n");
 	pthread_mutex_unlock(&phil->print_m);
+	pthread_mutex_lock(&phil->t_m);
+	phil->time_since_last_meal[id] = get_time();
+	pthread_mutex_unlock(&phil->t_m);
 	if (ft_sleep(phil->time_to_eat / 1000, phil, id) == -1)
 	{
 		pthread_mutex_unlock(&phil->f_m[first_fork]);
@@ -104,9 +107,6 @@ int	take_fork(t_phil *phil, int id)
 		return (-1);
 	}
 	phil->is_eating[id] = false;
-	pthread_mutex_lock(&phil->t_m);
-	phil->time_since_last_meal[id] = get_time();
-	pthread_mutex_unlock(&phil->t_m);
 	pthread_mutex_unlock(&phil->f_m[first_fork]);
 	pthread_mutex_unlock(&phil->f_m[second_fork]);
 	return (0);
