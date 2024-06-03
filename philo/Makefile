@@ -14,7 +14,8 @@ WHITE = \033[0;97m
 
 SRCS	= 	libft_utils.c \
 			thread.c \
-			utils.c
+			utils.c \
+			utils2.c
 
 
 SRCS_MAIN	= main.c $(SRCS)
@@ -23,7 +24,7 @@ OBJS	= $(SRCS_MAIN:.c=.o)
 
 CC	= @cc
 
-CFLAGS	+= -Wall -Wextra -Werror -g3 #-fsanitize=thread
+CFLAGS	+= -Wall -Wextra -Werror -g3
 
 RM	= @rm -rf
 

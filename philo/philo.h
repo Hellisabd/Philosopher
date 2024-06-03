@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:56:45 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/24 10:51:49 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/06/03 09:42:28 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct s_pers
 	int	name;
 }	t_pers;
 
-
 typedef struct s_phil
 {
 	ssize_t				time_to_eat;
@@ -59,29 +58,34 @@ typedef struct s_phil
 	pthread_mutex_t		mutex;
 	pthread_mutex_t		init_sup;
 	pthread_mutex_t		print_m;
-	pthread_mutex_t    start;
-	pthread_mutex_t    *f_m;
-	pthread_mutex_t    t_m;
-	pthread_mutex_t    alive_check;
+	pthread_mutex_t		start;
+	pthread_mutex_t		*f_m;
+	pthread_mutex_t		t_m;
+	pthread_mutex_t		alive_check;
 	int					err;
-	bool					*is_eating;
+	bool				*is_eating;
 	int					starting;
 }	t_phil;
 
 //LIBFT
 
-int	ft_strisdigit(char *s);
-ssize_t	ft_atoi(const char *nptr);
+int			ft_strisdigit(char *s);
+ssize_t		ft_atoi(const char *nptr);
 
 //THREAD
 
-int	supervisor(t_phil *phil, int id);
-void	*routine(void *data);
+int			supervisor(t_phil *phil, int id);
+void		*routine(void *data);
+int			take_fork(t_phil *phil, int id);
+void		init_mutex(t_phil *phil);
+int			routine_extend1(t_phil *phil, int id, int *meal);
 
 //UTILS
 
-void	my_printf(ssize_t time, int id, char *str);
-int	ft_sleep(ssize_t end, t_phil *phil, int id);
-ssize_t	get_time(void);
+void		ft_start(t_phil *phil, int *id);
+uint64_t	chrono(ssize_t time);
+void		my_printf(ssize_t time, int id, char *str);
+int			ft_sleep(ssize_t end, t_phil *phil, int id);
+ssize_t		get_time(void);
 
 #endif 

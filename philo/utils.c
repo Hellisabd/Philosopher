@@ -6,11 +6,11 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:52:55 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/24 10:55:43 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:55:50 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo.h"
+#include "philo.h"
 
 void	my_printf(ssize_t time, int id, char *str)
 {
@@ -44,7 +44,7 @@ int	ft_sleep(ssize_t end, t_phil *phil, int id)
 
 ssize_t	get_time(void)
 {
-	struct timeval tv;
+	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * (u_int64_t)1000 + tv.tv_usec / 1000);
