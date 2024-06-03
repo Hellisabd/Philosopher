@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 13:11:46 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/31 12:30:13 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/06/03 11:56:51 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	fork_extend1(t_phil *phil, int first_fork, int second_fork, int id)
 	pthread_mutex_lock(&phil->print_m);
 	if (supervisor(phil, id) == -1)
 		return (pthread_mutex_unlock(&phil->f_m[first_fork]), \
-		pthread_mutex_unlock(&phil->f_m[second_fork]), \
 		pthread_mutex_unlock(&phil->print_m), -1);
 	my_printf(chrono(phil->time), id, "has taken a fork\n");
 	pthread_mutex_unlock(&phil->print_m);
