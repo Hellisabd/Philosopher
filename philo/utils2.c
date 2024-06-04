@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 12:28:46 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/31 12:30:46 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/06/04 10:51:46 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	one_phil(t_phil *phil, int id)
 	{
 		my_printf(chrono(phil->time), id, "is thinking\n");
 		my_printf(chrono(phil->time), id, "has taken a fork\n");
-		ft_sleep(phil->time_before_death / 1000, phil, id);
+		ft_sleep(phil->time_before_death / 1000, phil);
 		my_printf(chrono(phil->time), id, "died\n");
 		return (-1);
 	}
@@ -53,7 +53,7 @@ void	*routine(void *data)
 		if (phil->alive == false)
 			return (pthread_mutex_unlock(&phil->alive_check), NULL);
 		pthread_mutex_unlock(&phil->alive_check);
-		if (supervisor(phil, id) == -1)
+		if (check_death(phil) == -1)
 			return (NULL);
 		take_fork(phil, id);
 		meal++;
@@ -65,25 +65,25 @@ void	*routine(void *data)
 
 int	routine_extend1(t_phil *phil, int id, int *meal)
 {
-	if (supervisor(phil, id) == -1)
+	if (check_death(phil) == -1)
 		return (-1);
 	pthread_mutex_lock(&phil->print_m);
-	if (supervisor(phil, id) == -1)
+	if (check_death(phil) == -1)
 		return (pthread_mutex_unlock(&phil->print_m), -1);
 	my_printf(chrono(phil->time), id, "is sleeping\n");
 	pthread_mutex_unlock(&phil->print_m);
-	if (supervisor(phil, id) == -1)
+	if (check_death(phil) == -1)
 		return (-1);
-	if (ft_sleep(phil->time_to_sleep / 1000, phil, id) == -1)
+	if (ft_sleep(phil->time_to_sleep / 1000, phil) == -1)
 		return (-1);
-	if (supervisor(phil, id) == -1)
+	if (check_death(phil) == -1)
 		return (-1);
 	pthread_mutex_lock(&phil->init_sup);
 	if (*meal == phil->nbr_of_eat)
 		return (pthread_mutex_unlock(&phil->init_sup), -1);
 	pthread_mutex_unlock(&phil->init_sup);
 	pthread_mutex_lock(&phil->print_m);
-	if (supervisor(phil, id) == -1)
+	if (check_death(phil) == -1)
 		return (pthread_mutex_unlock(&phil->print_m), -1);
 	my_printf(chrono(phil->time), id, "is thinking\n");
 	pthread_mutex_unlock(&phil->print_m);

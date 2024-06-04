@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:52:55 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/05/30 15:55:50 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/06/04 10:50:38 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void	my_printf(ssize_t time, int id, char *str)
 	printf("%s%ld %d %s%s", clr1, time, id, str, NC);
 }
 
-int	ft_sleep(ssize_t end, t_phil *phil, int id)
+int	ft_sleep(ssize_t end, t_phil *phil)
 {
 	ssize_t	time;
 
 	time = get_time();
 	while (get_time() < time + end)
 	{
-		if (supervisor(phil, id) == -1)
+		if (check_death(phil) == -1)
 			return (-1);
 	}
 	return (0);
