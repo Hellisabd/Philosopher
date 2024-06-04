@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 12:28:46 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/06/04 10:51:46 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:18:30 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,19 @@ int	one_phil(t_phil *phil, int id)
 	return (0);
 }
 
-void	*routine(void *data)
+void	actualise_death(t_phil *phil, int *i)
 {
-	t_phil	*phil;
-	int		id;
-	int		meal;
-
-	phil = (t_phil *)data;
-	meal = 0;
-	id = 0;
-	ft_start(phil, &id);
-	while (1)
+	pthread_mutex_lock(&phil->t_m);
+	if ((phil->time_since_last_meal[*i] + (phil->time_before_death / 1000)) \
+		* 1000 < get_time() * 1000)
 	{
-		if (one_phil(phil, id) == -1)
-			return (NULL);
+		pthread_mutex_unlock(&phil->t_m);
 		pthread_mutex_lock(&phil->alive_check);
-		if (phil->alive == false)
-			return (pthread_mutex_unlock(&phil->alive_check), NULL);
+		phil->alive = false;
 		pthread_mutex_unlock(&phil->alive_check);
-		if (check_death(phil) == -1)
-			return (NULL);
-		take_fork(phil, id);
-		meal++;
-		if (routine_extend1(phil, id, &meal) == -1)
-			return (NULL);
 	}
-	return (NULL);
+	else
+		pthread_mutex_unlock(&phil->t_m);
 }
 
 int	routine_extend1(t_phil *phil, int id, int *meal)
@@ -90,18 +77,31 @@ int	routine_extend1(t_phil *phil, int id, int *meal)
 	return (0);
 }
 
-void	init_mutex(t_phil *phil)
+void	*supervisor(void *data)
 {
-	int	i;
+	int		i;
+	t_phil	*phil;
 
-	i = 0;
-	pthread_mutex_init(&phil->start, NULL);
-	pthread_mutex_init(&phil->init_sup, NULL);
-	pthread_mutex_init(&phil->t_m, NULL);
-	pthread_mutex_init(&phil->alive_check, NULL);
-	pthread_mutex_init(&phil->print_m, NULL);
-	phil->f_m = malloc(sizeof(pthread_mutex_t) * phil->nbr_phil);
-	while (i < phil->nbr_phil)
-		pthread_mutex_init(&phil->f_m[i++], NULL);
-	pthread_mutex_init(&phil->mutex, NULL);
+	phil = (t_phil *)data;
+	pthread_mutex_lock(&phil->start);
+	pthread_mutex_unlock(&phil->start);
+	while (1)
+	{
+		i = 0;
+		while (i < phil->nbr_phil)
+		{
+			actualise_death(phil, &i);
+			pthread_mutex_lock(&phil->alive_check);
+			if (phil->alive == false)
+			{
+				pthread_mutex_unlock(&phil->alive_check);
+				pthread_mutex_lock(&phil->print_m);
+				my_printf(chrono(phil->time), i, "died\n");
+				pthread_mutex_unlock(&phil->print_m);
+				return (NULL);
+			}
+			pthread_mutex_unlock(&phil->alive_check);
+		}
+		i++;
+	}
 }
