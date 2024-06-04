@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:56:05 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/06/03 10:11:19 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:26:22 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	main(int argc, char **argv)
 {
 	struct timeval	tv;
 	t_phil			phil;
+	pthread_t		id;
 
 	if (init_phil(argc, argv, &phil) < 0)
 		return (1);
@@ -102,19 +103,17 @@ int	main(int argc, char **argv)
 	pthread_mutex_lock(&phil.start);
 	phil.i = 0;
 	while (phil.i < phil.nbr_phil)
-	{
-		pthread_create(&phil.id[phil.i], NULL, routine, &phil);
-		phil.i++;
-	}
+		pthread_create(&phil.id[phil.i++], NULL, routine, &phil);
 	gettimeofday(&tv, NULL);
 	phil.time = (tv.tv_sec * (u_int64_t)1000 + tv.tv_usec / 1000);
+	if (phil.nbr_phil > 1)
+		pthread_create(&id, NULL, supervisor, &phil);
 	pthread_mutex_unlock(&phil.start);
 	phil.i = 0;
 	while (phil.i < phil.nbr_phil)
-	{
-		pthread_join(phil.id[phil.i], NULL);
-		phil.i++;
-	}
+		pthread_join(phil.id[phil.i++], NULL);
+	if (phil.nbr_phil > 1)
+		pthread_join(id, NULL);
 	destroyer(&phil);
 	return (0);
 }

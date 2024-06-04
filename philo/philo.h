@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:56:45 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/06/03 09:42:28 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:17:25 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,12 @@ ssize_t		ft_atoi(const char *nptr);
 
 //THREAD
 
-int			supervisor(t_phil *phil, int id);
+int			one_phil(t_phil *phil, int id);
+void		*supervisor(void *phil);
 void		*routine(void *data);
 int			take_fork(t_phil *phil, int id);
 void		init_mutex(t_phil *phil);
+int			check_death(t_phil *phil);
 int			routine_extend1(t_phil *phil, int id, int *meal);
 
 //UTILS
@@ -85,7 +87,8 @@ int			routine_extend1(t_phil *phil, int id, int *meal);
 void		ft_start(t_phil *phil, int *id);
 uint64_t	chrono(ssize_t time);
 void		my_printf(ssize_t time, int id, char *str);
-int			ft_sleep(ssize_t end, t_phil *phil, int id);
+int			ft_sleep(ssize_t end, t_phil *phil);
+void		actualise_death(t_phil *phil, int *i);
 ssize_t		get_time(void);
 
 #endif 
