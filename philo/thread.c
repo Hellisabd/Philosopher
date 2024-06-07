@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 13:11:46 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/06/07 16:09:53 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:17:01 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ int	check_death(t_phil *phil)
 int	fork_extend1(t_phil *phil, int first_fork, int second_fork, int id)
 {
 	pthread_mutex_lock(&phil->f_m[first_fork]);
-	if (id == 2)
-		printf("first fork locked\n");
 	if (check_death(phil) == -1)
 		return (pthread_mutex_unlock(&phil->f_m[first_fork]), -1);
 	pthread_mutex_lock(&phil->print_m);
@@ -64,8 +62,6 @@ int	fork_extend1(t_phil *phil, int first_fork, int second_fork, int id)
 	my_printf(chrono(phil->time), id, "has taken a fork\n");
 	pthread_mutex_unlock(&phil->print_m);
 	pthread_mutex_lock(&phil->f_m[second_fork]);
-	if (id == 2)
-		printf("second fork locked\n");
 	if (check_death(phil) == -1)
 		return (pthread_mutex_unlock(&phil->f_m[second_fork]), \
 		pthread_mutex_unlock(&phil->f_m[first_fork]), -1);
