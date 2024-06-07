@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:56:45 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/06/04 15:17:25 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:46:48 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_phil
 	pthread_mutex_t		t_m;
 	pthread_mutex_t		alive_check;
 	int					err;
+	int					eaten;
 	bool				*is_eating;
 	int					starting;
 }	t_phil;

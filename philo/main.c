@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:56:05 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/06/04 14:26:22 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/06/07 15:29:47 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,14 @@ int	init_phil(int argc, char **argv, t_phil *phil)
 		phil->err = -1;
 	if (phil->nbr_phil < 0 || phil->time_before_death < 0
 		|| phil->time_to_eat < 0
-		|| phil->time_to_sleep < 0 || (phil->nbr_of_eat != -1 && argc != 6))
+		|| phil->time_to_sleep < 0 || (phil->nbr_of_eat != -1 && argc != 6)
+		|| phil->nbr_of_eat == 0)
 		return (printf("%s%s%s\n"\
 		, RED, "Huh? Did u read the fucking manual?", NC), -1);
 	if (init_phil2(phil) == -1)
 		return (printf("%s%s%s", RED, "Malloc Error", NC), -2);
 	init_mutex(phil);
+	phil->eaten = 0;
 	return (0);
 }
 

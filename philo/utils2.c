@@ -6,7 +6,7 @@
 /*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 12:28:46 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/06/04 15:18:30 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2024/06/07 14:15:07 by bgrosjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,12 @@ void	*supervisor(void *data)
 			{
 				pthread_mutex_unlock(&phil->alive_check);
 				pthread_mutex_lock(&phil->print_m);
-				my_printf(chrono(phil->time), i, "died\n");
+				if (phil->eaten != phil->nbr_of_eat)
+					my_printf(chrono(phil->time), i, "died\n");
 				pthread_mutex_unlock(&phil->print_m);
 				return (NULL);
 			}
 			pthread_mutex_unlock(&phil->alive_check);
 		}
-		i++;
 	}
 }
