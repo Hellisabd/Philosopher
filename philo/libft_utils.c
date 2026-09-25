@@ -54,6 +54,8 @@ int	ft_strisdigit(char *s)
 		return (0);
 	if (s[0] == '+')
 		i++;
+	if (!s[i])
+		return (0);
 	while (s[i])
 	{
 		if (ft_isdigit(s[i]) == 0)

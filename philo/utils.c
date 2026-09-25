@@ -26,7 +26,7 @@ void	my_printf(ssize_t time, int id, char *str)
 		clr1 = BLUE;
 	if (id % 5 == 4)
 		clr1 = RED;
-	printf("%s%ld %d %s%s", clr1, time, id, str, NC);
+	printf("%s%ld %d %s%s", clr1, time, id + 1, str, NC);
 }
 
 int	ft_sleep(ssize_t end, t_phil *phil)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bgrosjea <bgrosjea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hellisabd <hellisabd@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 19:56:05 by bgrosjea          #+#    #+#             */
-/*   Updated: 2024/06/07 15:29:47 by bgrosjea         ###   ########.fr       */
+/*   Updated: 2026/09/25 15:47:49 by hellisabd        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,9 @@ int	init_phil2(t_phil *phil)
 
 int	init_phil(int argc, char **argv, t_phil *phil)
 {
-	int		i;
-
-	phil->err = -1;
+	phil->err = 0;
 	phil->i = 1;
 	phil->alive = true;
-	i = 0;
 	while (argv[phil->i])
 		if (ft_strisdigit(argv[phil->i++]) == 0)
 			phil->err = -1;
@@ -63,7 +60,7 @@ int	init_phil(int argc, char **argv, t_phil *phil)
 		fill_phil(argv, argc, phil);
 	else
 		phil->err = -1;
-	if (phil->nbr_phil < 0 || phil->time_before_death < 0
+	if (phil->err == -1 || phil->nbr_phil <= 0 || phil->time_before_death < 0
 		|| phil->time_to_eat < 0
 		|| phil->time_to_sleep < 0 || (phil->nbr_of_eat != -1 && argc != 6)
 		|| phil->nbr_of_eat == 0)
